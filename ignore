@@ -1,0 +1,6 @@
+./.idea/
+./.idea/*
+./.idea/inspectionProfiles
+./geckodriver.log
+./environment
+./src/behave.txt
