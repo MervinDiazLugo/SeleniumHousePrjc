@@ -4,3 +4,4 @@
 ./geckodriver.log
 ./environment
 ./src/behave.txt
+*.pyc
