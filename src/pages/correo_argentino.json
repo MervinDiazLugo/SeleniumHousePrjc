@@ -1,0 +1,6 @@
+{
+  "tipo": {
+    "GetFieldBy": "name",
+    "ValueToFind": "producto"
+  }
+}

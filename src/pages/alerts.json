@@ -1,0 +1,11 @@
+{
+  "frame": {
+    "GetFieldBy": "id",
+    "ValueToFind": "iframeResult"
+  },
+
+    "try it": {
+    "GetFieldBy": "xpath",
+    "ValueToFind": "/html[1]/body[1]/button[1]"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "frame1": {
+    "GetFieldBy": "id",
+    "ValueToFind": "frame1"
+  },
+
+    "Topic": {
+    "GetFieldBy": "xpath",
+    "ValueToFind": "//html//body//input"
+  }
+}

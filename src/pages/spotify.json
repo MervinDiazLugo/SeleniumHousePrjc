@@ -1,0 +1,17 @@
+{
+  "email": {
+    "GetFieldBy": "id",
+    "ValueToFind": "email"
+  },
+
+  "email error":{
+    "GetFieldBy": "xpath",
+    "ValueToFind": "//*[contains(@class, 'LinkContainer-sc-1t58wcv-0') and contains(text(),'Este correo')]"
+
+  },
+  "confirm": {
+    "GetFieldBy": "id",
+    "ValueToFind": "confirm"
+  }
+
+}

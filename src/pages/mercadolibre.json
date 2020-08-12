@@ -1,0 +1,6 @@
+{
+  "Pagar": {
+    "GetFieldBy": "xpath",
+    "ValueToFind": "//a[contains(text(),'Cómo pagar con Mercado Pago')]"
+  }
+}
