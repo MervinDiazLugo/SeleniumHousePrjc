@@ -1,8 +1,8 @@
-
+@Demo
 Feature: Selenium Demo
 
 
-  @Login
+  @openFeature
   Scenario: Open Browser
     Given I go to main site app
     Then close all windows
@@ -63,7 +63,7 @@ Feature: Selenium Demo
     And wait 10 seconds
     Then close all windows
 
-  @openFeature
+  @Navegador
   Scenario: Scroll
     Given I open the app in https://www.mercadolibre.com.ar/
     And I set mercadolibre as DOM
