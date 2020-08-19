@@ -1,0 +1,4 @@
+echo. ##################### TEST PATH #####################
+python -m pytest tst_002.py --alluredir=.\allure-results
+pause
+

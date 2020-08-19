@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import allure
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import NoAlertPresentException, NoSuchWindowException, UnexpectedAlertPresentException
@@ -235,6 +236,9 @@ class Selenium:
         except UnexpectedAlertPresentException:
             pass
 
+    def allureScreenshot(self, descripcion):
+        allure.attach(self.driver.get_screenshot_as_png(), descripcion, attachment_type=allure.attachment_type.PNG)
+
 
     def alert_windows(self, accept="accept", time = 8):
         try:
@@ -259,3 +263,16 @@ class Selenium:
         except TimeoutException:
             print('Alerta no presente')
             pass
+
+    def page_has_loaded(self):
+        print("Checking if {} page is loaded.".format(self.driver.current_url))
+        page_state = self.driver.execute_script('return document.readyState;')
+        #while (page_state != 'complete'):
+            #print("Checking if {} page is loaded.".format(self.driver.current_url))
+            #page_state = self.driver.execute_script('return document.readyState;')
+            #break;
+        yield
+        WebDriverWait(self.driver, 10).until(lambda driver: page_state == 'complete')
+        assert page_state == 'complete', "No se completo la carga"
+        print("site {} is loaded".format(self.driver.current_url))
+

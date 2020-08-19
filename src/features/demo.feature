@@ -1,5 +1,6 @@
 @Demo
 Feature: Selenium Demo
+  #Esta prueba X
 
 
   @openFeature
@@ -107,4 +108,15 @@ Feature: Selenium Demo
     And wait 3 seconds
 
 
+  @allure
+  Scenario: Allure ScreenShots
+    Given I open the app in https://www.amazon.com/
+    And I set amazon as DOM
+    Then Take allure ScreenShot: Hola_inMundo
+    Then close all windows
 
+  @allure
+  Scenario: wait site is loaded
+    Given I open the app in http://declaraciones.seniat.gob.ve/portal/page/portal/PORTAL_SENIAT
+    Then Take allure ScreenShot: Hola_inMundo
+    Then close all windows

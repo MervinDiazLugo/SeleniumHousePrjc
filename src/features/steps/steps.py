@@ -9,14 +9,17 @@ class stepsDefinitions():
     @given('I go to main site app')
     def step_impl(self):
         self.driver = Selenium.open_browser(self)
+        Selenium.page_has_loaded(self)
 
     @given("I open the app in (.*)")
     def step_impl(self, url):
         self.driver = Selenium.open_browser(self, url)
+        Selenium.page_has_loaded(self)
 
     @step("I open with (.*) the app (.*)")
     def step_impl(self, navegador, URL):
         self.driver = Selenium.open_browser(self, URL, navegador)
+        Selenium.page_has_loaded(self)
 
     @step("close all windows")
     def step_impl(self):
@@ -86,6 +89,10 @@ class stepsDefinitions():
     @then("Take a ScreenShot: (.*)")
     def step_impl(self, descripcion):
         Selenium.screenshot(self, descripcion)
+
+    @then("Take allure ScreenShot: (.*)")
+    def step_impl(self, descripcion):
+        Selenium.allureScreenshot(self, descripcion)
 
 
     @step("I switch to Frame: (.*)")
