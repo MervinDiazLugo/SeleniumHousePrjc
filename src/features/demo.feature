@@ -120,3 +120,21 @@ Feature: Selenium Demo
     Given I open the app in http://declaraciones.seniat.gob.ve/portal/page/portal/PORTAL_SENIAT
     Then Take allure ScreenShot: Hola_inMundo
     Then close all windows
+
+   Scenario: Open new tabs
+     Given I go to main site app
+     Given I open new tab in: https://alt-torrent.com/
+     And I go to alt-torrent tab
+     Given I open new tab in: https://news.google.com/topstories?hl=es-419&gl=AR&ceid=AR:es-419
+     And I go to noticias tab
+     And I go to Principal tab
+     And wait 10 seconds
+
+  Scenario: move and click with actionChains
+     Given I go to main site app
+     And I set spotify as DOM
+    And I move to email  with actionChains
+    And I click in email with actionChains
+
+
+

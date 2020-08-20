@@ -108,3 +108,22 @@ class stepsDefinitions():
     @step("Accept alert present")
     def step_impl(self):
         Selenium.alert_windows(self)
+
+
+    @given("I open new tab in: (.*)")
+    def step_impl(self, url):
+        self.driver.execute_script(f'''window.open("{url}","_blank");''')
+        print("Estas en : " + self.driver.current_url)
+
+
+    @step("I go to (.*) tab")
+    def step_impl(self, ventana):
+        Selenium.switch_to_windows_name(self, ventana)
+
+    @step("I move to (.*)  with actionChains")
+    def step_impl(self, element):
+        Selenium.actionChainsMove(self, element)\
+
+    @step("I click in (.*) with actionChains")
+    def step_impl(self, element):
+        Selenium.actionChainsClick(self, element)

@@ -9,6 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 import re
 import os
 
@@ -17,12 +18,14 @@ import pytest
 import json
 import time
 horaGlobal = time.strftime("%H%M%S")  # formato 24 houras
+
+
 class Selenium:
+    ventanas = {}
     ##########################################################################
     ##############   -=_INICIALIZAR DRIVERS_=-   #############################
     ##########################################################################
     def open_browser(self, URL=configuration.URL, navegador=configuration.browser):
-        self.ventanas = {}
         print("----------------")
         print(navegador)
         print(URL)
@@ -40,7 +43,8 @@ class Selenium:
             self.driver.implicitly_wait(10)
             self.driver.get(URL)
             self.principal = self.driver.window_handles[0]
-            self.ventanas = {'Principal': self.driver.window_handles[0]}
+            Selenium.ventanas = {'Principal': self.driver.window_handles[0]}
+
             return self.driver
 
         if navegador == ("CHROME_headless"):
@@ -52,7 +56,7 @@ class Selenium:
             self.driver.implicitly_wait(10)
             self.driver.get(URL)
             self.principal = self.driver.window_handles[0]
-            self.ventanas = {'Principal': self.driver.window_handles[0]}
+            Selenium.ventanas = {'Principal': self.driver.window_handles[0]}
             self.nWindows = 0
             return self.driver
 
@@ -62,7 +66,7 @@ class Selenium:
             self.driver.maximize_window()
             self.driver.get(URL)
             self.principal = self.driver.window_handles[0]
-            self.ventanas = {'Principal': self.driver.window_handles[0]}
+            Selenium.ventanas = {'Principal': self.driver.window_handles[0]}
             self.nWindows = 0
             return self.driver
 
@@ -124,24 +128,29 @@ class Selenium:
         try:
             if self.json_GetFieldBy.lower() == "id":
                 elements = self.driver.find_element(By.ID, self.json_ValueToFind)
+                print(elements)
 
             if self.json_GetFieldBy.lower() == "name":
                 elements = self.driver.find_element(By.NAME, self.json_ValueToFind)
+                print(elements)
 
             if self.json_GetFieldBy.lower() == "xpath":
                 if MyTextElement is not None:
                     self.json_ValueToFind = self.json_ValueToFind.format(MyTextElement)
                     print(self.json_ValueToFind)
                 elements = self.driver.find_element(By.XPATH, self.json_ValueToFind)
+                print(elements)
 
             if self.json_GetFieldBy.lower() == "link":
                 elements = self.driver.find_element(By.PARTIAL_LINK_TEXT, self.json_ValueToFind)
 
             if self.json_GetFieldBy.lower() == "css":
                 elements = self.driver.find_element(By.CSS_SELECTOR, self.json_ValueToFind)
+                print(elements)
 
             if self.json_GetFieldBy.lower() == "class":
                 elements = self.driver.find_element(By.CLASS_NAME, self.json_ValueToFind)
+                print(elements)
 
             print("get_elements: " + self.json_ValueToFind)
             return elements
@@ -159,7 +168,7 @@ class Selenium:
         select = Select(element)
         return select
 
-    def wait(self, seconds):
+    def wait(self, seconds=8):
         time.sleep(int(seconds))
 
     def tearDown(self):
@@ -275,4 +284,68 @@ class Selenium:
         WebDriverWait(self.driver, 10).until(lambda driver: page_state == 'complete')
         assert page_state == 'complete', "No se completo la carga"
         print("site {} is loaded".format(self.driver.current_url))
+
+
+    def switch_to_windows_name(self, ventana):
+        if ventana in Selenium.ventanas:
+            Selenium.wait(self, 5)
+            self.driver.switch_to.window(Selenium.ventanas[ventana])
+            Selenium.page_has_loaded(self)
+            print ("volviendo a " + ventana + " : " + Selenium.ventanas[ventana])
+        else:
+            try:
+                Selenium.wait(self)
+                wtime = 0
+                self.nWindows = len(self.driver.window_handles) - 1
+                EXIST = self.driver.window_handles[int(self.nWindows)] in Selenium.ventanas.values()
+                while EXIST:
+                    self.nWindows = 0
+                    while (self.nWindows <= len(self.driver.window_handles)):
+                        EXIST = self.driver.window_handles[int(self.nWindows)] in Selenium.ventanas.values()
+                        if EXIST == False:
+                            break
+                        wtime = wtime + 1
+                        self.nWindows = self.nWindows + 1
+                        Selenium.wait(self, 1)
+
+                        if wtime == 30:
+                            break
+                        continue
+                if EXIST == False:
+                    Selenium.ventanas[ventana] = self.driver.window_handles[int(self.nWindows)]
+                print(Selenium.ventanas)
+                self.driver.switch_to.window(Selenium.ventanas[ventana])
+                Selenium.page_has_loaded(self)
+                Selenium.alert_windows(self, "accept", 1)
+                self.driver.maximize_window()
+                print ("Estas en " + ventana + " : " + Selenium.ventanas[ventana])
+                print(self.driver.current_url)
+                #Selenium.is_not_404(self)
+
+            except KeyError:
+                self.msj = f"KeyError: La ventana: {ventana} no existe en {Selenium.ventanas}"
+                Selenium.tearDown(self, "fail")
+            except IndexError:
+                self.msj = f"IndexError: No se encontro la ventana: {ventana}"
+                print(self.msj)
+                pass
+                #Functions.tearDown(self, "fail")
+            except NoSuchWindowException:
+                self.msj = f"NoSuchWindowException: Error retrieving window"
+                Selenium.tearDown(self, "fail")
+            except UnexpectedAlertPresentException as e:
+                self.msj = "switch_to_windows_name: " + str(e)
+                Selenium.tearDown(self, "fail")
+
+    def actionChainsMove(self, element):
+        localizador = Selenium.get_elements(self, element)
+        action = ActionChains(self.driver)
+        action.move_to_element(localizador)
+        action.perform()
+
+    def actionChainsClick(self, element):
+        localizador = Selenium.get_elements(self, element)
+        action = ActionChains(self.driver)
+        action.click(localizador)
+        action.perform()
 
