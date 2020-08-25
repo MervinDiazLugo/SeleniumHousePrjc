@@ -17,11 +17,13 @@ from functions.conf import configuration
 import pytest
 import json
 import time
+import openpyxl
 horaGlobal = time.strftime("%H%M%S")  # formato 24 houras
 
 
 class Selenium:
     ventanas = {}
+    scenario = configuration.scenario
     ##########################################################################
     ##############   -=_INICIALIZAR DRIVERS_=-   #############################
     ##########################################################################
@@ -349,3 +351,22 @@ class Selenium:
         action.click(localizador)
         action.perform()
 
+    def leer_celda(self, celda, wSheet = 'test'):
+        wb = openpyxl.load_workbook(configuration.Excel)
+        sheet = wb[wSheet]
+        valor= str(sheet[celda].value)
+        print (u"------------------------------------")
+        print (u"El libro de excel utilizado es de es: " + configuration.Excel)
+        print (u"El valor de la celda es: " + valor)
+        print (u"------------------------------------")
+        return valor
+
+    def escribir_celda(self, celda, valor, wSheet = 'test'):
+        wb = openpyxl.load_workbook(configuration.Excel)
+        hoja = wb[wSheet]
+        hoja[celda]= valor
+        wb.save(configuration.Excel)
+        print (u"------------------------------------")
+        print (u"El libro de excel utilizado es de es: " + configuration.Excel)
+        print (u"Se escribio en la celda " + str(celda) + u" el valor: " + str (valor))
+        print (u"------------------------------------")

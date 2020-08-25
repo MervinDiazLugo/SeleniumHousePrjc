@@ -127,3 +127,22 @@ class stepsDefinitions():
     @step("I click in (.*) with actionChains")
     def step_impl(self, element):
         Selenium.actionChainsClick(self, element)
+
+
+    @given("Read data from cell (.*)")
+    def step_impl(self, cell):
+        Selenium.scenario[cell] = Selenium.leer_celda(self, cell)
+        print(Selenium.scenario[cell])
+
+    @given("Read cell (.*) from sheet (.*)")
+    def step_impl(self, cell, sheet):
+        Selenium.scenario[cell] = Selenium.leer_celda(self, celda = cell, wSheet=sheet)
+        print (Selenium.scenario[cell])
+
+
+    @step("get text in element (.*) and save in scenario context")
+    def step_impl(self, element):
+        Selenium.scenario[element] = Selenium.get_elements(self, element).text
+        print(Selenium.scenario[element])
+        print(Selenium.scenario)
+

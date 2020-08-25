@@ -2,6 +2,9 @@
 Feature: Selenium Demo
   #Esta prueba X
 
+  Background:
+    Given Read data from cell C2
+    Given Read cell A2 from sheet test2
 
   @openFeature
   Scenario: Open Browser
@@ -136,5 +139,18 @@ Feature: Selenium Demo
     And I move to email  with actionChains
     And I click in email with actionChains
 
+  Scenario: Read From Excel
+    Given Read data from cell C2
+    Given Read cell A2 from sheet test2
 
 
+  @openFeature
+  Scenario: save in scenario context
+    Given I go to main site app
+    And I set spotify as DOM
+    And I click in element email
+    And I set mervindiazlugo@gmail.com in element email
+    And I set TAB in element email
+    Then Wait element email error
+    And get text in element email error and save in scenario context
+    Then close all windows
