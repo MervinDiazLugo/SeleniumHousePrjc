@@ -370,3 +370,15 @@ class Selenium:
         print (u"El libro de excel utilizado es de es: " + configuration.Excel)
         print (u"Se escribio en la celda " + str(celda) + u" el valor: " + str (valor))
         print (u"------------------------------------")
+
+
+    def ReplaceWithContextValues(self, text):
+        PatronDeBusqueda= r"(?<=Scenario:)\w+"
+        variables= re.findall(str(PatronDeBusqueda), text, re.IGNORECASE)
+        for variable in variables:
+            text = re.sub('(Scenario:)'+ variable, configuration.scenario[variable], text, re.IGNORECASE)
+            print("Scenario variable: " + text)
+        return text
+
+
+

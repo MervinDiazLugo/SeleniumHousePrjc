@@ -13,8 +13,12 @@ class configuration:
     if environment == 'test':
         scenario = {}
         scenario['MiVariable'] = "XXXXX"
+        scenario['Test001'] = "hola Joe"
+
         URL = "https://www.spotify.com/py/signup/"
 
     if environment == 'dev':
-
+        scenario = {}
+        scenario['MiVariable'] = "XXXXX"
+        scenario['Test001'] = "hola Joe"
         URL = "https://www.amazon.com/"

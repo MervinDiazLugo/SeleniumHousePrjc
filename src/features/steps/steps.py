@@ -41,7 +41,8 @@ class stepsDefinitions():
         elif text == 'ENTER':
             Selenium.get_elements(self, element).send_keys(Keys.ENTER)
         else:
-            Selenium.get_elements(self, element).send_keys(text)
+            textContext = Selenium.ReplaceWithContextValues(self, text)
+            Selenium.get_elements(self, element).send_keys(textContext)
 
     @step("I set (.*) in dropdown (.*)")
     def step_impl(self, text, element):
@@ -65,7 +66,8 @@ class stepsDefinitions():
     @step("Assert (.*) is equal to element (.*)")
     def step_impl(self, text, element):
         message = Selenium.get_elements(self, element).text
-        assert text in message, f"El mensaje no coincide :  {message}"
+        context = Selenium.ReplaceWithContextValues(self, text)
+        assert context in message, f"El mensaje no coincide :  {message}"
 
     @then("Validate if this (.*) is present")
     def step_impl(self, element):
